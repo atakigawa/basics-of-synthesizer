@@ -1,3 +1,3 @@
 # basics-of-synthesizer
 
-overtone¤Î¤ªÊÙ¶¯ÍÑ
+overtoneã®ãŠå‹‰å¼·ç”¨
