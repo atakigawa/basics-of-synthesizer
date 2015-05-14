@@ -1,12 +1,12 @@
 (ns basics-of-synthesizer.study.amplifier
   (:use overtone.live))
 
-; example$B$K$"$C$?E,Ev$J(Bpad$B2;$r<Z$j$F$-$?(B.
-; $B0l1~%N%j$H$7$F$O!"(B
-; $B;XDj$7$?2;Id$"$?$j$N2;$r=P$9(Bsaw$B$H!"(B
-; $B$=$N%*%/%?!<%V2<$N2;$r=P$9(Bsine$B$rAH$_9g$o$;$F$$$k(B.
+; exampleにあった適当なpad音を借りてきた.
+; 一応ノリとしては、
+; 指定した音符あたりの音を出すsawと、
+; そのオクターブ下の音を出すsineを組み合わせている.
 
-;$B2;NL0lDj(B
+;音量一定
 (definst pad1 [note 60 amp 0.7 attack 0.001 release 2]
   (let [freq  (midicps note)
         f-eg (+ freq
@@ -19,7 +19,7 @@
 ;(pad1)
 ;(stop)
 
-; ADSR$B$r$D$1$F2;NL$KJQ2=(B(sustain$B$"$j(B)
+; ADSRをつけて音量に変化(sustainあり)
 (definst pad2 [note 60 amp 0.7
                attack 1 decay 1 sustain 0.3 release 2
                gate 1]
@@ -34,11 +34,11 @@
         sig (+ src sub-src)]
     (* amp amp-eg sig)))
 ;(def my-pad2 (pad2))
-;;sustain$B$"$j$N(Benvelope$B$O(Bgate$B$r(B0$B$K$9$k$3$H$G%-!<$rN%$7$?$N$HF1$8$3$H$K$J$k(B
+;;sustainありのenvelopeはgateを0にすることでキーを離したのと同じことになる
 ;(ctl my-pad2 :gate 0)
 
-; ADSR$B$r$D$1$F2;NL$KJQ2=(B(sustain$B$J$7(B)
-; (perc atk decay)$B$O(B(adsr atk decay 0 decay)$B$HF1$8(B
+; ADSRをつけて音量に変化(sustainなし)
+; (perc atk decay)は(adsr atk decay 0 decay)と同じ
 (definst pad3 [note 60 amp 0.7 attack 0.001 release 2]
   (let [freq  (midicps note)
         amp-eg (env-gen (perc attack release) :action FREE)
@@ -51,9 +51,9 @@
     (* amp amp-eg sig)))
 ;(pad3)
 
-; $B$*$^$1$N$d$D(B
-; pad2$B$G;H$C$?(Badsr$B$HF1$8$b$N$r(Blow pass filter $B$N(Bfrequency
-; $B$KBP$7$F$+$1$F$_$?(B.
+; おまけのやつ
+; pad2で使ったadsrと同じものをlow pass filter のfrequency
+; に対してかけてみた.
 (definst pad4 [note 60 amp 0.7
                attack 3 decay 0.3 sustain 0.3 release 2
                f-eg-gate 1]
